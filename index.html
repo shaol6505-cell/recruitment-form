@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人选登记表</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg:       #F5F3EE;
+    --surface:  #FFFFFF;
+    --border:   #E0DDD6;
+    --text:     #1A1917;
+    --muted:    #7A7770;
+    --accent:   #2D5BE3;
+    --accent-light: #EEF2FD;
+    --danger:   #D94F3D;
+    --success:  #2A7A4B;
+    --radius:   10px;
+    --shadow:   0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── 顶部标题 ── */
+  .header {
+    max-width: 680px;
+    margin: 0 auto 36px;
+  }
+  .header-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── 卡片 ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    max-width: 680px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .card-icon.blue  { background: var(--accent-light); }
+  .card-icon.green { background: #EEFAF3; }
+  .card-icon.amber { background: #FDF6E3; }
+  .card-icon.gray  { background: #F2F1EE; }
+  .card-title { font-size: 14px; font-weight: 500; }
+  .card-body  { padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card-body.single { grid-template-columns: 1fr; }
+
+  /* ── 字段 ── */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.span2 { grid-column: span 2; }
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: .03em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  label .req { color: var(--danger); font-size: 11px; }
+
+  input[type=text], input[type=email], input[type=date],
+  select, textarea {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 13px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(45,91,227,.1);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7770' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  /* ── 文件上传区 ── */
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative;
+    background: var(--bg);
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-light); }
+  .upload-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-icon { font-size: 26px; margin-bottom: 8px; }
+  .upload-text  { font-size: 13px; font-weight: 500; color: var(--text); }
+  .upload-hint  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .upload-preview {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--accent-light);
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .upload-preview.show { display: flex; }
+  .upload-preview .fname { font-weight: 500; flex: 1; text-align: left; word-break: break-all; }
+  .upload-preview .fsize { color: var(--muted); white-space: nowrap; }
+  .remove-file {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 16px; padding: 0; line-height: 1;
+  }
+  .remove-file:hover { color: var(--danger); }
+
+  /* ── 提交区 ── */
+  .submit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .submit-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .submit-note strong { color: var(--text); font-weight: 500; }
+
+  .btn-submit {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    padding: 11px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    box-shadow: 0 2px 8px rgba(45,91,227,.25);
+  }
+  .btn-submit:hover { background: #1f49c7; box-shadow: 0 4px 14px rgba(45,91,227,.35); }
+  .btn-submit:active { transform: scale(.98); }
+  .btn-submit:disabled { background: var(--muted); box-shadow: none; cursor: not-allowed; }
+  .btn-submit .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: none;
+  }
+  .btn-submit.loading .spinner { display: block; }
+  .btn-submit.loading .btn-label { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── 结果提示 ── */
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: #fff;
+    font-size: 13px; font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 999;
+  }
+  .toast.success { background: var(--success); }
+  .toast.error   { background: var(--danger); }
+  .toast.show    { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── 配置说明浮窗 ── */
+  .config-banner {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    background: #FFFBEB;
+    border: 1px solid #F5D97A;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #7A5C00;
+  }
+  .config-banner strong { color: #4A3800; }
+  .config-banner code {
+    background: #FEF3C7;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  @media (max-width: 540px) {
+    .card-body { grid-template-columns: 1fr; }
+    .field.span2 { grid-column: span 1; }
+    .submit-card { flex-direction: column; align-items: stretch; }
+    .btn-submit { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ⚠️ 配置提示（部署完成后可删除此块） -->
+<div class="config-banner">
+  <strong>⚙️ 部署前请完成以下配置：</strong><br>
+  1. 按下方 <em>Google Apps Script 部署指南</em> 创建 GAS 脚本并部署为 Web App<br>
+  2. 将获得的 URL 填入下方 JS 的 <code>GAS_URL</code> 变量<br>
+  3. 将 <code>SPREADSHEET_ID</code>、<code>DRIVE_FOLDER_ID</code>、<code>BOT_TOKEN</code>、<code>CHAT_ID</code> 填入 GAS 脚本<br>
+  4. 完成后删除此提示栏，表单即可正式使用
+</div>
+
+<div class="header">
+  <div class="header-tag">招聘管理系统</div>
+  <h1>人选登记表</h1>
+  <p>填写完成后点击提交，数据将自动同步至 Google Sheets，简历存入 Google Drive，并通知 TG 群。</p>
+</div>
+
+<!-- ── 基本信息 ── -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon blue">👤</div>
+    <span class="card-title">基本信息</span>
+  </div>
+  <div class="card-body">
+    <div class="field">
+      <label>姓名 <span class="req">*</span></label>
+      <input type="text" id="f_name" placeholder="候选人姓名" required>
+    </div>
+    <div class="field">
+      <label>应聘岗位 <span class="req">*</span></label>
+      <input type="text" id="f_position" placeholder="如：招聘专员">
+    </div>
+    <div class="field">
+      <label>部门（二级）</label>
+      <select id="f_dept">
+        <option value="">请选择</option>
+        <!-- ✏️ 修改为你们的部门列表 -->
+        <option>人力资源部</option>
+        <option>市场部</option>
+        <option>技术部</option>
+        <option>运营部</option>
+        <option>财务部</option>
+        <option>其他</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>中心（一级）</label>
+      <select id="f_center">
+        <option value="">请选择</option>
+        <!-- ✏️ 修改为你们的中心列表 -->
+        <option>总部</option>
+        <option>东南亚事业中心</option>
+        <option>其他</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>学历</label>
+      <select id="f_edu">
+        <option value="">请选择</option>
+        <option>高中及以下</option>
+        <option>大专</option>
+        <option>本科</option>
+        <option>硕士</option>
+        <option>博士</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>TG / EG / WX</label>
+      <input type="text" id="f_tg" placeholder="联系方式账号">
+    </div>
+    <div class="field">
+      <label>邮箱</label>
+      <input type="email" id="f_email" placeholder="example@email.com">
+    </div>
+    <div class="field">
+      <label>期望入职时间</label>
+      <input type="date" id="f_joindate">
+    </div>
+  </div>
+</div>
+
+<!-- ── 薪资信息 ── -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon green">💰</div>
+    <span class="card-title">薪资信息</span>
+  </div>
+  <div class="card-body">
+    <div class="field">
+      <label>薪资货币</label>
+      <select id="f_currency">
+        <option value="">请选择</option>
+        <option>USD</option>
+        <option>CNY</option>
+        <option>KHR</option>
+        <option>THB</option>
+        <option>其他</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>试用薪资</label>
+      <input type="text" id="f_trial_salary" placeholder="如：8000 或 8K">
+    </div>
+    <div class="field">
+      <label>转正薪资</label>
+      <input type="text" id="f_salary" placeholder="如：10000 或 1W">
+    </div>
+    <div class="field">
+      <label>渠道（来源）</label>
+      <select id="f_channel">
+        <option value="">请选择</option>
+        <!-- ✏️ 修改为你们的渠道列表 -->
+        <option>BOSS直聘</option>
+        <option>猎聘</option>
+        <option>智联招聘</option>
+        <option>内推</option>
+        <option>LinkedIn</option>
+        <option>TG群</option>
+        <option>其他</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ── 招聘团队 ── -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon amber">👥</div>
+    <span class="card-title">招聘团队</span>
+  </div>
+  <div class="card-body">
+    <div class="field">
+      <label>面试官</label>
+      <input type="text" id="f_interviewer" placeholder="面试官姓名">
+    </div>
+    <div class="field">
+      <label>招聘专员 <span class="req">*</span></label>
+      <input type="text" id="f_recruiter" placeholder="负责人姓名">
+    </div>
+    <div class="field">
+      <label>招聘组长</label>
+      <input type="text" id="f_leader" placeholder="组长姓名">
+    </div>
+    <div class="field">
+      <label>招聘主管</label>
+      <input type="text" id="f_manager" placeholder="主管姓名">
+    </div>
+  </div>
+</div>
+
+<!-- ── 简历上传 + 备注 ── -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon gray">📎</div>
+    <span class="card-title">简历 &amp; 备注</span>
+  </div>
+  <div class="card-body single">
+    <div class="field">
+      <label>上传简历</label>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="f_resume" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip" onchange="handleFile(this)">
+        <div class="upload-icon">📄</div>
+        <div class="upload-text">点击选择文件，或拖拽至此</div>
+        <div class="upload-hint">支持 PDF / Word / 图片 / ZIP，最大 10MB</div>
+      </div>
+      <div class="upload-preview" id="uploadPreview">
+        <span>📎</span>
+        <span class="fname" id="previewName"></span>
+        <span class="fsize" id="previewSize"></span>
+        <button class="remove-file" onclick="removeFile()" title="移除">✕</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>备注</label>
+      <textarea id="f_remark" placeholder="其他补充信息，如面试情况、特殊要求等..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ── 提交 ── -->
+<div class="submit-card">
+  <div class="submit-note">
+    <strong>提交前请确认：</strong><br>
+    姓名、应聘岗位、招聘专员为必填项
+  </div>
+  <button class="btn-submit" id="btnSubmit" onclick="submitForm()">
+    <div class="spinner"></div>
+    <span class="btn-label">提交登记 →</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  ✏️ 配置区 — 填入你的实际值
+// ═══════════════════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwPRIxgc39m1ozk86z4KginXcotu6jI71w9aNZeFp9KFIO8WT2cDT5rGtDqxrDccWMU/exec';
+//   ↑ Google Apps Script 部署后获得的 URL
+
+// ═══════════════════════════════════════════════════════
+
+// ── 文件处理 ──
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('文件不能超过 10MB', 'error'); input.value = ''; return;
+  }
+  document.getElementById('previewName').textContent = file.name;
+  document.getElementById('previewSize').textContent = formatSize(file.size);
+  document.getElementById('uploadPreview').classList.add('show');
+}
+
+function removeFile() {
+  document.getElementById('f_resume').value = '';
+  document.getElementById('uploadPreview').classList.remove('show');
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+// 拖拽支持
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+zone.addEventListener('drop', e => {
+  e.preventDefault(); zone.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById('f_resume');
+  const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+  handleFile(input);
+});
+
+// ── 提交 ──
+async function submitForm() {
+  const name      = val('f_name').trim();
+  const position  = val('f_position').trim();
+  const recruiter = val('f_recruiter').trim();
+
+  if (!name)      { showToast('请填写候选人姓名', 'error'); return; }
+  if (!position)  { showToast('请填写应聘岗位', 'error'); return; }
+  if (!recruiter) { showToast('请填写招聘专员', 'error'); return; }
+
+  if (!GAS_URL || GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE') {
+    showToast('⚠️ 请先配置 GAS_URL', 'error'); return;
+  }
+
+  const btn = document.getElementById('btnSubmit');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  try {
+    // 构建表单数据（含文件 base64）
+    const fileInput = document.getElementById('f_resume');
+    let fileBase64 = '', fileName = '';
+    if (fileInput.files[0]) {
+      const file = fileInput.files[0];
+      fileName = file.name;
+      fileBase64 = await toBase64(file);
+    }
+
+    const payload = {
+      姓名:     name,
+      岗位:     position,
+      部门:     val('f_dept'),
+      中心:     val('f_center'),
+      学历:     val('f_edu'),
+      薪资货币: val('f_currency'),
+      试用薪资: val('f_trial_salary'),
+      转正薪资: val('f_salary'),
+      入职时间: val('f_joindate'),
+      TG账号:   val('f_tg'),
+      邮箱:     val('f_email'),
+      渠道:     val('f_channel'),
+      面试官:   val('f_interviewer'),
+      招聘专员: recruiter,
+      招聘组长: val('f_leader'),
+      招聘主管: val('f_manager'),
+      备注:     val('f_remark'),
+      文件名:   fileName,
+      文件内容: fileBase64,
+    };
+
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+
+    if (json.status === 'ok') {
+      showToast('✅ 登记成功！数据已同步', 'success');
+      resetForm();
+    } else {
+      showToast('❌ 提交失败：' + (json.message || '未知错误'), 'error');
+    }
+  } catch (e) {
+    showToast('❌ 网络错误：' + e.message, 'error');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+  }
+}
+
+function val(id) { return document.getElementById(id).value || ''; }
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function resetForm() {
+  ['f_name','f_position','f_dept','f_center','f_edu','f_currency',
+   'f_trial_salary','f_salary','f_joindate','f_tg','f_email','f_channel',
+   'f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  removeFile();
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+
+<!--
+════════════════════════════════════════════════════════════════
+  📋 Google Apps Script 部署指南
+════════════════════════════════════════════════════════════════
+
+1. 打开 https://script.google.com → 新建项目
+
+2. 将以下代码粘贴到 Code.gs，填入你的配置值：
+
+────────────────────────────────────────────────────────────────
+const SPREADSHEET_ID  = 'YOUR_SPREADSHEET_ID';
+const SHEET_TAB       = '候选人登记';
+const DRIVE_FOLDER_ID = '1uaMJ47B6acu1vdV-HE3ilqFwbz679kOA'; // 你的 Drive 文件夹
+const BOT_TOKEN       = 'YOUR_TG_BOT_TOKEN';
+const CHAT_ID         = 'YOUR_TG_CHAT_ID';  // 群ID，负数
+
+const COL_MAP = {
+  序号:0, 姓名:1, 岗位:2, 部门:3, 中心:4, 面试官:5, 学历:6,
+  薪资货币:7, 试用薪资:8, 转正薪资:9, 入职时间:10,
+  'TG/EG/WX':11, 邮箱:12, 渠道:13, 招聘专员:14, 招聘组长:15,
+  招聘主管:16, 备注:17, 记录时间:18, 附件名:22, 附件状态:23, 附件链接:24
+};
+
+function doPost(e) {
+  try {
+    const data   = JSON.parse(e.postData.contents);
+    const now    = new Date().toLocaleString('zh-CN', {timeZone:'Asia/Phnom_Penh'});
+    const ss     = SpreadsheetApp.openById(SPREADSHEET_ID);
+    let ws;
+    try { ws = ss.getSheetByName(SHEET_TAB); }
+    catch(_) { ws = ss.insertSheet(SHEET_TAB); }
+
+    // 初始化表头
+    if (ws.getLastRow() === 0) {
+      const headers = Object.keys(COL_MAP).concat(['来源姓名','来源群ID','来源消息ID']);
+      ws.appendRow(headers);
+    }
+
+    // 处理简历附件
+    let attachName = '', attachStatus = '无附件', attachLink = '';
+    if (data.文件内容 && data.文件名) {
+      try {
+        const month  = Utilities.formatDate(new Date(), 'Asia/Phnom_Penh', 'yyyy-MM');
+        const folder = getOrCreateFolder(month);
+        const bytes  = Utilities.base64Decode(data.文件内容);
+        const blob   = Utilities.newBlob(bytes, 'application/octet-stream', data.文件名);
+        const file   = folder.createFile(blob);
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        attachName   = data.文件名;
+        attachLink   = file.getUrl();
+        attachStatus = 'Drive已存档';
+      } catch(err) { attachStatus = '上传失败:'+err.message; }
+    }
+
+    // 构建行数据
+    const totalCols = 25;
+    const row = new Array(totalCols).fill('');
+    const nextSeq = Math.max(ws.getLastRow(), 1);
+    row[COL_MAP['序号']]    = nextSeq;
+    row[COL_MAP['姓名']]    = data.姓名    || '';
+    row[COL_MAP['岗位']]    = data.岗位    || '';
+    row[COL_MAP['部门']]    = data.部门    || '';
+    row[COL_MAP['中心']]    = data.中心    || '';
+    row[COL_MAP['面试官']]  = data.面试官  || '';
+    row[COL_MAP['学历']]    = data.学历    || '';
+    row[COL_MAP['薪资货币']]= data.薪资货币|| '';
+    row[COL_MAP['试用薪资']]= normSalary(data.试用薪资);
+    row[COL_MAP['转正薪资']]= normSalary(data.转正薪资);
+    row[COL_MAP['入职时间']]= data.入职时间 || '';
+    row[COL_MAP['TG/EG/WX']]= data.TG账号 || '';
+    row[COL_MAP['邮箱']]    = data.邮箱    || '';
+    row[COL_MAP['渠道']]    = data.渠道    || '';
+    row[COL_MAP['招聘专员']]= data.招聘专员|| '';
+    row[COL_MAP['招聘组长']]= data.招聘组长|| '';
+    row[COL_MAP['招聘主管']]= data.招聘主管|| '';
+    row[COL_MAP['备注']]    = data.备注    || '';
+    row[COL_MAP['记录时间']]= now;
+    row[22] = attachName;
+    row[23] = attachStatus;
+    row[24] = attachLink;
+
+    ws.appendRow(row);
+
+    // 推 TG 通知
+    if (BOT_TOKEN && CHAT_ID) {
+      const msg = '✅ 新人选登记\n'
+        + '姓名：' + (data.姓名||'') + '\n'
+        + '岗位：' + (data.岗位||'') + '\n'
+        + '招聘专员：' + (data.招聘专员||'') + '\n'
+        + '附件：' + attachStatus + '\n'
+        + '时间：' + now;
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+        method:'post', contentType:'application/json',
+        payload: JSON.stringify({chat_id: CHAT_ID, text: msg})
+      });
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'error', message: err.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getOrCreateFolder(monthStr) {
+  const parent = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+  const it = parent.getFoldersByName(monthStr);
+  return it.hasNext() ? it.next() : parent.createFolder(monthStr);
+}
+
+function normSalary(v) {
+  if (!v) return '';
+  const s = String(v).trim().toUpperCase().replace(/,/g,'');
+  let m;
+  m = s.match(/^([\d.]+)\s*[W万]$/);
+  if (m) return String(Math.round(parseFloat(m[1])*10000));
+  m = s.match(/^([\d.]+)\s*K$/);
+  if (m) return String(Math.round(parseFloat(m[1])*1000));
+  return v;
+}
+────────────────────────────────────────────────────────────────
+
+3. 部署：点击「部署」→「新建部署」→ 类型选「Web 应用」
+   - 执行身份：我（你的账号）
+   - 访问权限：任何人
+   → 复制部署 URL
+
+4. 把 URL 填入本 HTML 文件顶部的 GAS_URL 变量
+
+完成！
+════════════════════════════════════════════════════════════════
+-->
+</body>
+</html>
