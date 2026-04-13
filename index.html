@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>人选登记表</title>
 <style>
-  @import url('https://script.google.com/macros/s/AKfycbyq-ms393bS8ufFc3jaHWzSexL3WLw7N3FNtSSQibg41H24XYVh2Kaj3aMxD6fY9dWd/exec');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@500;600&display=swap');
 
   :root {
     --bg:          #0E0F11;
@@ -35,30 +35,17 @@
     padding: 48px 20px 100px;
   }
 
-  .header {
-    max-width: 700px;
-    margin: 0 auto 40px;
-  }
+  .header { max-width: 700px; margin: 0 auto 40px; }
   .header-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(91,138,240,.25);
-    padding: 5px 12px;
-    border-radius: 20px;
-    margin-bottom: 18px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+    background: var(--accent-dim); border: 1px solid rgba(91,138,240,.25);
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 18px;
   }
   .header-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
   }
   @keyframes pulse {
@@ -66,175 +53,121 @@
     50%      { opacity:.4; transform:scale(.75); }
   }
   .header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    margin-bottom: 10px;
+    font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 600;
+    line-height: 1.15; letter-spacing: -.02em; margin-bottom: 10px;
     background: linear-gradient(135deg,#F0F0F2 0%,#8A8B95 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   .header p { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    max-width: 700px;
-    margin: 0 auto 16px;
-    overflow: hidden;
-    transition: border-color .2s;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; max-width: 700px; margin: 0 auto 16px;
+    overflow: hidden; transition: border-color .2s;
   }
   .card:focus-within { border-color: var(--border2); }
   .card-header {
-    padding: 18px 26px 15px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--bg2);
+    padding: 18px 26px 15px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; background: var(--bg2);
   }
   .card-icon {
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    display: grid; place-items: center;
-    font-size: 14px; flex-shrink: 0;
-    border: 1px solid var(--border);
+    width: 30px; height: 30px; border-radius: 8px;
+    display: grid; place-items: center; font-size: 14px;
+    flex-shrink: 0; border: 1px solid var(--border);
   }
   .card-icon.blue  { background: var(--accent-dim);  border-color: rgba(91,138,240,.3); }
   .card-icon.green { background: #0F2A1E; border-color: rgba(61,184,122,.25); }
   .card-icon.amber { background: #251C09; border-color: rgba(224,154,42,.25); }
   .card-icon.red   { background: #261010; border-color: rgba(224,85,85,.25); }
   .card-icon.gray  { background: var(--surface2); }
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px; font-weight: 500;
-    color: var(--text); letter-spacing: .01em;
-  }
-  .card-body {
-    padding: 22px 26px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: .01em; }
+  .card-body { padding: 22px 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .card-body.single { grid-template-columns: 1fr; }
-
   .field { display: flex; flex-direction: column; gap: 7px; }
   .field.span2 { grid-column: span 2; }
 
   label {
-    font-size: 11px; font-weight: 500;
-    color: var(--muted);
-    letter-spacing: .06em;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    letter-spacing: .06em; text-transform: uppercase;
     display: flex; align-items: center; gap: 5px;
   }
   label .req { color: var(--danger); font-size: 13px; line-height: 1; }
 
-  input[type=text], input[type=email], input[type=date],
-  select, textarea {
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    outline: none;
+  input[type=text], input[type=email], input[type=date], select, textarea {
+    width: 100%; font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 10px 14px; outline: none;
     transition: border-color .15s, box-shadow .15s, background .15s;
     appearance: none; -webkit-appearance: none;
   }
   input::placeholder, textarea::placeholder { color: var(--muted2); }
   input:focus, select:focus, textarea:focus {
-    border-color: var(--accent);
-    background: var(--surface2);
+    border-color: var(--accent); background: var(--surface2);
     box-shadow: 0 0 0 3px var(--accent-glow);
   }
   input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.5); cursor: pointer; }
   select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7B82' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 13px center;
-    padding-right: 34px;
-    cursor: pointer;
+    background-repeat: no-repeat; background-position: right 13px center;
+    padding-right: 34px; cursor: pointer;
   }
   select option { background: #1C1D20; }
   textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
 
-  /* 团队选择高亮 */
   #f_team {
-    border-color: rgba(91,138,240,.5);
-    background: var(--accent-dim);
-    font-weight: 500;
-    color: #A8C0F8;
-    font-size: 13px;
+    border-color: rgba(91,138,240,.5); background: var(--accent-dim);
+    font-weight: 500; color: #A8C0F8; font-size: 13px;
   }
   #f_team:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
   #f_team option { background: #1C1D20; color: var(--text); font-weight: 400; }
 
-  /* 文件上传 */
+  /* ── 多文件上传 ── */
   .upload-zone {
-    border: 1.5px dashed var(--border2);
-    border-radius: var(--radius);
-    padding: 30px 20px;
-    text-align: center;
-    cursor: pointer;
+    border: 1.5px dashed var(--border2); border-radius: var(--radius);
+    padding: 30px 20px; text-align: center; cursor: pointer;
     transition: border-color .15s, background .15s;
-    position: relative;
-    background: var(--bg);
+    position: relative; background: var(--bg);
   }
-  .upload-zone:hover, .upload-zone.drag {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-dim); }
   .upload-zone input[type=file] {
     position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
   }
   .upload-icon { font-size: 28px; margin-bottom: 10px; }
   .upload-text { font-size: 13px; font-weight: 500; color: var(--text); }
   .upload-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .upload-preview {
-    display: none; align-items: center; gap: 10px;
-    margin-top: 12px; padding: 10px 14px;
-    background: var(--accent-dim);
-    border: 1px solid rgba(91,138,240,.25);
+
+  .file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .file-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--accent-dim); border: 1px solid rgba(91,138,240,.25);
     border-radius: 8px; font-size: 13px;
   }
-  .upload-preview.show { display: flex; }
-  .upload-preview .fname { font-weight: 500; flex: 1; text-align: left; word-break: break-all; color: #A8C0F8; }
-  .upload-preview .fsize { color: var(--muted); white-space: nowrap; font-size: 12px; }
-  .remove-file { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 0; line-height: 1; }
-  .remove-file:hover { color: var(--danger); }
+  .file-item .ficon { font-size: 16px; flex-shrink: 0; }
+  .file-item .fname { font-weight: 500; flex: 1; text-align: left; word-break: break-all; color: #A8C0F8; }
+  .file-item .fsize { color: var(--muted); white-space: nowrap; font-size: 12px; }
+  .file-item .fremove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 16px; padding: 0; line-height: 1; flex-shrink: 0;
+  }
+  .file-item .fremove:hover { color: var(--danger); }
+  .file-count { font-size: 12px; color: var(--accent); margin-top: 8px; text-align: right; }
 
   /* 提交区 */
   .submit-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 22px 26px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; max-width: 700px; margin: 0 auto;
+    padding: 22px 26px; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px;
   }
   .submit-note { font-size: 12px; color: var(--muted); line-height: 1.6; }
   .submit-note strong { color: var(--text); font-weight: 500; }
 
   .btn-submit {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px; font-weight: 500;
-    color: #fff; background: var(--accent);
-    border: none; border-radius: var(--radius);
-    padding: 11px 30px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 8px;
-    white-space: nowrap;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 500;
+    color: #fff; background: var(--accent); border: none;
+    border-radius: var(--radius); padding: 11px 30px; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
     transition: background .15s, transform .1s, box-shadow .15s;
     box-shadow: 0 0 20px rgba(91,138,240,.3);
   }
@@ -242,24 +175,19 @@
   .btn-submit:active { transform: scale(.98); }
   .btn-submit:disabled { background: var(--surface2); color: var(--muted); box-shadow: none; cursor: not-allowed; }
   .btn-submit .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-    display: none;
+    width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin .7s linear infinite; display: none;
   }
   .btn-submit.loading .spinner { display: block; }
   .btn-submit.loading .btn-label { display: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .toast {
-    position: fixed;
-    bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text);
-    font-size: 13px; font-weight: 500;
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--surface2); border: 1px solid var(--border2);
+    color: var(--text); font-size: 13px; font-weight: 500;
     padding: 12px 20px; border-radius: 10px;
     box-shadow: 0 8px 32px rgba(0,0,0,.4);
     opacity: 0; transition: opacity .25s, transform .25s;
@@ -287,7 +215,7 @@
   <p>填写完成后提交，数据自动同步至 Google Sheets，简历存入 Google Drive，并通知至对应团队群组。</p>
 </div>
 
-<!-- ── 所属团队（必须第一个填，决定通知发哪个群）── -->
+<!-- ── 所属团队 ── -->
 <div class="card">
   <div class="card-header">
     <div class="card-icon red">🎯</div>
@@ -298,7 +226,6 @@
       <label>选择团队 <span class="req">*</span></label>
       <select id="f_team" required>
         <option value="">— 请先选择，通知将发送至对应群组（必填）—</option>
-        <!-- ✏️ 新增团队：添加一行 <option value="关键字">显示名称</option> 即可 -->
         <option value="招聘">每日数据自动同步【招聘】</option>
         <option value="万天">新人入职对接 - 万天</option>
         <option value="中诚">新人入职对接 - 中诚</option>
@@ -368,17 +295,10 @@
       <label>薪资货币 <span class="req">*</span></label>
       <select id="f_currency">
         <option value="">请选择</option>
-        <option>USD</option>
-        <option>USDT</option>
-        <option>CNY</option>
-        <option>TWD</option>
-        <option>JPY</option>
-        <option>GBP</option>
-        <option>KRW</option>
-        <option>AED</option>
-        <option>HKD</option>
-        <option>SGD</option>
-        <option>MYR</option>
+        <option>USD</option><option>USDT</option><option>CNY</option>
+        <option>TWD</option><option>JPY</option><option>GBP</option>
+        <option>KRW</option><option>AED</option><option>HKD</option>
+        <option>SGD</option><option>MYR</option>
       </select>
     </div>
     <div class="field">
@@ -430,19 +350,17 @@
   </div>
   <div class="card-body single">
     <div class="field">
-      <label>上传简历</label>
+      <label>上传简历（可多份）</label>
       <div class="upload-zone" id="uploadZone">
-        <input type="file" id="f_resume" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip" onchange="handleFile(this)">
+        <input type="file" id="f_resume" multiple
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.zip,.rar,.txt,.csv"
+          onchange="handleFiles(this)">
         <div class="upload-icon">📄</div>
         <div class="upload-text">点击选择文件，或拖拽至此</div>
-        <div class="upload-hint">支持 PDF / Word / 图片 / ZIP，最大 10MB</div>
+        <div class="upload-hint">支持 PDF / Word / Excel / PPT / 图片 / ZIP 等，每份最大 10MB</div>
       </div>
-      <div class="upload-preview" id="uploadPreview">
-        <span>📎</span>
-        <span class="fname" id="previewName"></span>
-        <span class="fsize" id="previewSize"></span>
-        <button class="remove-file" onclick="removeFile()" title="移除">✕</button>
-      </div>
+      <div class="file-list" id="fileList"></div>
+      <div class="file-count" id="fileCount"></div>
     </div>
     <div class="field">
       <label>备注</label>
@@ -468,32 +386,72 @@
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyq-ms393bS8ufFc3jaHWzSexL3WLw7N3FNtSSQibg41H24XYVh2Kaj3aMxD6fY9dWd/exec';
 
-function handleFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 10 * 1024 * 1024) { showToast('文件不能超过 10MB', 'error'); input.value = ''; return; }
-  document.getElementById('previewName').textContent = file.name;
-  document.getElementById('previewSize').textContent = formatSize(file.size);
-  document.getElementById('uploadPreview').classList.add('show');
+let selectedFiles = [];
+
+function getFileIcon(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  if (ext === 'pdf') return '📕';
+  if (['doc','docx'].includes(ext)) return '📘';
+  if (['xls','xlsx','csv'].includes(ext)) return '📗';
+  if (['ppt','pptx'].includes(ext)) return '📙';
+  if (['jpg','jpeg','png','gif'].includes(ext)) return '🖼️';
+  if (['zip','rar'].includes(ext)) return '🗜️';
+  return '📄';
 }
-function removeFile() {
-  document.getElementById('f_resume').value = '';
-  document.getElementById('uploadPreview').classList.remove('show');
+
+function handleFiles(input) {
+  Array.from(input.files).forEach(file => {
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('「' + file.name + '」超过 10MB，已跳过', 'error'); return;
+    }
+    const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+    if (!exists) selectedFiles.push(file);
+  });
+  input.value = '';
+  renderFileList();
 }
+
+function renderFileList() {
+  const list  = document.getElementById('fileList');
+  const count = document.getElementById('fileCount');
+  list.innerHTML = '';
+  selectedFiles.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'file-item';
+    item.innerHTML =
+      '<span class="ficon">' + getFileIcon(file.name) + '</span>' +
+      '<span class="fname">' + file.name + '</span>' +
+      '<span class="fsize">' + formatSize(file.size) + '</span>' +
+      '<button class="fremove" onclick="removeFile(' + index + ')" title="移除">✕</button>';
+    list.appendChild(item);
+  });
+  count.textContent = selectedFiles.length > 0 ? '已选 ' + selectedFiles.length + ' 份文件' : '';
+}
+
+function removeFile(index) {
+  selectedFiles.splice(index, 1);
+  renderFileList();
+}
+
 function formatSize(b) {
   if (b < 1024) return b + ' B';
   if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
   return (b/1048576).toFixed(1) + ' MB';
 }
+
 const zone = document.getElementById('uploadZone');
 zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
 zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
 zone.addEventListener('drop', e => {
   e.preventDefault(); zone.classList.remove('drag');
-  const f = e.dataTransfer.files[0]; if (!f) return;
-  const inp = document.getElementById('f_resume');
-  const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files;
-  handleFile(inp);
+  Array.from(e.dataTransfer.files).forEach(file => {
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('「' + file.name + '」超过 10MB，已跳过', 'error'); return;
+    }
+    const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+    if (!exists) selectedFiles.push(file);
+  });
+  renderFileList();
 });
 
 async function submitForm() {
@@ -508,13 +466,14 @@ async function submitForm() {
 
   const btn = document.getElementById('btnSubmit');
   btn.classList.add('loading'); btn.disabled = true;
+
   try {
-    const fileInput = document.getElementById('f_resume');
-    let fileBase64 = '', fileName = '';
-    if (fileInput.files[0]) {
-      fileName   = fileInput.files[0].name;
-      fileBase64 = await toBase64(fileInput.files[0]);
+    const filesData = [];
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const base64 = await toBase64(selectedFiles[i]);
+      filesData.push({ 文件名: selectedFiles[i].name, 文件内容: base64 });
     }
+
     const payload = {
       团队关键字: team,
       姓名:       name,
@@ -534,9 +493,11 @@ async function submitForm() {
       招聘组长:   val('f_leader'),
       招聘主管:   val('f_manager'),
       备注:       val('f_remark'),
-      文件名:     fileName,
-      文件内容:   fileBase64,
+      文件列表:   filesData,
+      文件名:     filesData.length > 0 ? filesData[0].文件名 : '',
+      文件内容:   filesData.length > 0 ? filesData[0].文件内容 : '',
     };
+
     const res  = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
     const json = await res.json();
     if (json.status === 'ok') {
@@ -567,7 +528,8 @@ function resetForm() {
    'f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
-  removeFile();
+  selectedFiles = [];
+  renderFileList();
 }
 function showToast(msg, type = '') {
   const t = document.getElementById('toast');
