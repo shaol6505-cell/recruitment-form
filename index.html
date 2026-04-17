@@ -282,7 +282,7 @@
       <input type="date" id="f_joindate">
     </div>
     <div class="field">
-      <label>工作方式</label>
+      <label>工作方式 <span class="req">*</span></label>
       <select id="f_workmode">
         <option value="">请选择</option>
         <option>到岗</option>
@@ -471,6 +471,8 @@ async function submitForm() {
   if (!name)      { showToast('请填写候选人姓名', 'error'); return; }
   if (!position)  { showToast('请填写应聘岗位', 'error'); return; }
   if (!recruiter) { showToast('请填写招聘专员', 'error'); return; }
+  const workmode  = val('f_workmode').trim();
+  if (!workmode)  { showToast('请选择工作方式', 'error'); return; }
 
   const btn = document.getElementById('btnSubmit');
   btn.classList.add('loading'); btn.disabled = true;
