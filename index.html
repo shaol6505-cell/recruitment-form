@@ -281,6 +281,15 @@
       <label>期望入职时间</label>
       <input type="date" id="f_joindate">
     </div>
+    <div class="field">
+      <label>到岗 / 远程</label>
+      <select id="f_workmode">
+        <option value="">请选择</option>
+        <option>到岗</option>
+        <option>远程</option>
+        <option>混合</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -485,6 +494,7 @@ async function submitForm() {
       试用薪资:   val('f_trial_salary'),
       转正薪资:   val('f_salary'),
       入职时间:   val('f_joindate'),
+      到岗远程:   val('f_workmode'),
       TG账号:     val('f_tg'),
       邮箱:       val('f_email'),
       渠道:       val('f_channel'),
@@ -525,7 +535,7 @@ function toBase64(file) {
 function resetForm() {
   ['f_team','f_name','f_position','f_dept','f_center','f_edu','f_currency',
    'f_trial_salary','f_salary','f_joindate','f_tg','f_email','f_channel',
-   'f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
+   'f_workmode','f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   selectedFiles = [];
