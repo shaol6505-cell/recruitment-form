@@ -91,13 +91,16 @@
   }
   label .req { color: var(--danger); font-size: 13px; line-height: 1; }
 
-  input[type=text], input[type=email], input[type=date], select, textarea {
+  input[type=text], input[type=email], input[type=date], input[type=number], select, textarea {
     width: 100%; font-family: 'Inter', sans-serif; font-size: 14px;
     color: var(--text); background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 10px 14px; outline: none;
     transition: border-color .15s, box-shadow .15s, background .15s;
     appearance: none; -webkit-appearance: none;
   }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
   input::placeholder, textarea::placeholder { color: var(--muted2); }
   input:focus, select:focus, textarea:focus {
     border-color: var(--accent); background: var(--surface2);
