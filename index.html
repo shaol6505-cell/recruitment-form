@@ -287,8 +287,8 @@
       <input type="email" id="f_email" placeholder="example@email.com">
     </div>
     <div class="field">
-      <label>期望入职时间</label>
-      <input type="date" id="f_joindate">
+      <label>期望入职时间 <span class="req">*</span></label>
+      <input type="date" id="f_joindate" required>
     </div>
     <div class="field">
       <label>工作方式 <span class="req">*</span></label>
@@ -397,7 +397,7 @@
 <!-- ── 提交 ── -->
 <div class="submit-card">
   <div class="submit-note">
-    <strong>必填：</strong>所属团队、姓名、应聘岗位、招聘专员<br>
+    <strong>必填：</strong>所属团队、姓名、应聘岗位、招聘专员、入职时间<br>
     提交后通知将精准发送至所选团队群组，不会发错
   </div>
   <button class="btn-submit" id="btnSubmit" onclick="submitForm()">
@@ -520,6 +520,10 @@ async function submitForm() {
   const isPositiveInt = s => s === '' || /^\d+$/.test(s);
   if (!isPositiveInt(trialSalary)) { showToast('试用薪资只能填数字（如 8000），不能写 8K / 8W', 'error'); return; }
   if (!isPositiveInt(salary))      { showToast('转正薪资只能填数字（如 10000），不能写 1W / 10K', 'error'); return; }
+
+  const joindate = val('f_joindate').trim();
+  if (!joindate)                              { showToast('请填写期望入职时间', 'error'); return; }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(joindate))  { showToast('入职时间必须是完整日期（年/月/日）', 'error'); return; }
 
   const btn = document.getElementById('btnSubmit');
   btn.classList.add('loading'); btn.disabled = true;
