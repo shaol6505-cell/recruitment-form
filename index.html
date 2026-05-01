@@ -345,6 +345,10 @@
       <input type="text" id="f_interviewer" placeholder="面试官姓名">
     </div>
     <div class="field">
+      <label>团队名字</label>
+      <input type="text" id="f_team_name" placeholder="自动同步上方所选团队" readonly>
+    </div>
+    <div class="field">
       <label>招聘专员 <span class="req">*</span></label>
       <input type="text" id="f_recruiter" placeholder="负责人姓名">
     </div>
@@ -403,6 +407,10 @@
 <script>
 const GAS_DEPLOY_ID = 'AKfycbw24ku_2KlIIV9Dyiw8BRr_3HkK9kzzqFL0R0Tu8QrVS_3_Ey-lv6KqCnRA_gMsD8Nd';
 const GAS_URL = 'https://script.google.com/macros/s/' + GAS_DEPLOY_ID + '/exec';
+
+document.getElementById('f_team').addEventListener('change', function() {
+  document.getElementById('f_team_name').value = this.value;
+});
 
 let selectedFiles = [];
 
@@ -530,6 +538,7 @@ async function submitForm() {
       TG账号:     val('f_tg'),
       邮箱:       val('f_email'),
       渠道:       val('f_channel'),
+      团队名字:   val('f_team_name'),
       面试官:     val('f_interviewer'),
       招聘专员:   recruiter,
       招聘组长:   val('f_leader'),
@@ -563,7 +572,7 @@ function toBase64(file) {
   });
 }
 function resetForm() {
-  ['f_team','f_name','f_position','f_dept','f_center','f_edu','f_currency',
+  ['f_team','f_team_name','f_name','f_position','f_dept','f_center','f_edu','f_currency',
    'f_trial_salary','f_salary','f_joindate','f_tg','f_email','f_channel',
    'f_workmode','f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
