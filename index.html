@@ -324,11 +324,15 @@
     </div>
     <div class="field">
       <label>试用薪资 <span class="req">*</span></label>
-      <input type="text" id="f_trial_salary" placeholder="如：8000 或 8K">
+      <input type="number" id="f_trial_salary" placeholder="如：8000" min="0" step="1" inputmode="numeric">
     </div>
     <div class="field">
       <label>转正薪资 <span class="req">*</span></label>
-      <input type="text" id="f_salary" placeholder="如：10000 或 1W">
+      <input type="number" id="f_salary" placeholder="如：10000" min="0" step="1" inputmode="numeric">
+    </div>
+    <div class="field span2">
+      <label>薪资备注（特别说明）</label>
+      <input type="text" id="f_salary_note" placeholder="如：试用 3 个月 / 含绩效 / 年薪 14 个月">
     </div>
   </div>
 </div>
@@ -511,6 +515,12 @@ async function submitForm() {
   const workmode  = val('f_workmode').trim();
   if (!workmode)  { showToast('请选择工作方式', 'error'); return; }
 
+  const trialSalary = val('f_trial_salary').trim();
+  const salary      = val('f_salary').trim();
+  const isPositiveInt = s => s === '' || /^\d+$/.test(s);
+  if (!isPositiveInt(trialSalary)) { showToast('试用薪资只能填数字（如 8000），不能写 8K / 8W', 'error'); return; }
+  if (!isPositiveInt(salary))      { showToast('转正薪资只能填数字（如 10000），不能写 1W / 10K', 'error'); return; }
+
   const btn = document.getElementById('btnSubmit');
   btn.classList.add('loading'); btn.disabled = true;
 
@@ -533,6 +543,7 @@ async function submitForm() {
       薪资货币:   val('f_currency'),
       试用薪资:   val('f_trial_salary'),
       转正薪资:   val('f_salary'),
+      薪资备注:   val('f_salary_note'),
       入职时间:   val('f_joindate'),
       到岗远程:   val('f_workmode'),
       TG账号:     val('f_tg'),
@@ -573,7 +584,7 @@ function toBase64(file) {
 }
 function resetForm() {
   ['f_team','f_team_name','f_name','f_position','f_dept','f_center','f_edu','f_currency',
-   'f_trial_salary','f_salary','f_joindate','f_tg','f_email','f_channel',
+   'f_trial_salary','f_salary','f_salary_note','f_joindate','f_tg','f_email','f_channel',
    'f_workmode','f_interviewer','f_recruiter','f_leader','f_manager','f_remark'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
