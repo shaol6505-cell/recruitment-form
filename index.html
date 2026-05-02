@@ -415,8 +415,11 @@
 const GAS_DEPLOY_ID = 'AKfycbw24ku_2KlIIV9Dyiw8BRr_3HkK9kzzqFL0R0Tu8QrVS_3_Ey-lv6KqCnRA_gMsD8Nd';
 const GAS_URL = 'https://script.google.com/macros/s/' + GAS_DEPLOY_ID + '/exec';
 
+const TEAM_NAME_NO_SUFFIX = new Set(['招聘']);
 document.getElementById('f_team').addEventListener('change', function() {
-  document.getElementById('f_team_name').value = this.value ? this.value + '渠道' : '';
+  const v = this.value;
+  document.getElementById('f_team_name').value =
+    !v ? '' : (TEAM_NAME_NO_SUFFIX.has(v) ? v : v + '渠道');
 });
 
 let selectedFiles = [];
