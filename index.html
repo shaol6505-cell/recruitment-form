@@ -378,7 +378,7 @@
   </div>
   <div class="card-body single">
     <div class="field">
-      <label>上传简历（可多份）</label>
+      <label>上传简历（可多份）<span class="req">*</span></label>
       <div class="upload-zone" id="uploadZone">
         <input type="file" id="f_resume" multiple
           accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.zip,.rar,.txt,.csv"
@@ -400,7 +400,7 @@
 <!-- ── 提交 ── -->
 <div class="submit-card">
   <div class="submit-note">
-    <strong>必填：</strong>所属团队、姓名、应聘岗位、招聘专员、入职时间<br>
+    <strong>必填：</strong>所属团队、姓名、应聘岗位、招聘专员、入职时间、简历<br>
     提交后通知将精准发送至所选团队群组，不会发错
   </div>
   <button class="btn-submit" id="btnSubmit" onclick="submitForm()">
@@ -530,6 +530,8 @@ async function submitForm() {
   const joindate = val('f_joindate').trim();
   if (!joindate)                              { showToast('请填写期望入职时间', 'error'); return; }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(joindate))  { showToast('入职时间必须是完整日期（年/月/日）', 'error'); return; }
+
+  if (selectedFiles.length === 0) { showToast('请至少上传一份简历', 'error'); return; }
 
   const btn = document.getElementById('btnSubmit');
   btn.classList.add('loading'); btn.disabled = true;
